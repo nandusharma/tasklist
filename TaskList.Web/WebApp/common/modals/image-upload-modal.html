@@ -1,0 +1,16 @@
+﻿<div>
+    <div class="modal-header">
+        <button type="button" class="close" aria-hidden="true" ng-click="$dismiss()">&times;</button>
+        <h4 class="modal-title">Upload Image</h4>
+    </div>
+    <div class="modal-body">
+        <h4>Choose an Image:</h4>
+        <input type="file" accept="image/jpeg,image/gif,image/png" file="file.input" fileuploader />
+        <h4 ng-show="file.url">Crop Image:</h4>
+        <img image-cropper source="file.url" result="file.coords" allow-rect="allowRect" />
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" ng-click="$dismiss()">Cancel</button>
+        <button type="button" class="btn btn-success" ng-click="confirm()" ng-disabled="!file.coords">Confirm</button>
+    </div>
+</div>

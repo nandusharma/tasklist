@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="loaded">
+<head>
+    <title></title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link href="/includes/bundles/startup-framework/flat-ui/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="/includes/bundles/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/includes/bundles/startup-framework/common-files/css/animations.css" />
+    
+    <link href='http://fonts.googleapis.com/css?family=Kalam' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'>
+    
+    <!-- Using only with Flat-UI (free)-->
+    <link rel="stylesheet" href="/includes/bundles/iconmoon/iconfont.css"/>
+    
+    <style>
+        .wide-modal .modal-dialog {
+            width: 750px;
+        }
+        .checkbox-custom.green input:checked + label {
+            background: #16a085;
+        }
+        /*[required]::after {
+            content: "*";
+            color: red;
+        }
+        [required] {
+            background: lightgreen;
+        }
+        [required].ng-invalid.ng-dirty {
+            background: red;
+        }*/
+
+    </style>
+    <!--<link rel="stylesheet" href="/content/css/lumen-bootstrap.css">-->
+    <link href="/includes/css/style.css" rel="stylesheet" />
+
+    <!--Dependencies-->
+    <script src="Scripts/jquery/jquery-2.1.0.js"></script>
+    <script src="Scripts/jquery/jquery-ui.min.js"></script>
+    <script src="Content/libraries/moment/moment.min.js"></script>
+
+    <!--Angular-->
+    <script src="Scripts/angular/angular.js"></script>
+    <script src="Scripts/angular/angular-locale_en-gb.js"></script>
+    <script src="Scripts/angular/angular-resource.js"></script>
+    <script src="Scripts/angular/angular-animate.js"></script>
+    <script src="Scripts/angular/angular-route.js"></script>
+
+    <script src="Scripts/ui-bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+
+    <script src="/includes/bundles/dropdown/bootstrap.dropdown.js"></script>
+
+    <script src="Scripts/pageScripts.js"></script>
+
+    <!--App Files-->
+    <script src="WebApp/common/tasklist.common.js"></script>
+
+    <script src="WebApp/tasklist/tasklist.manage.js"></script>
+    <script src="WebApp/tasklist/task/tasklist.tasks.js"></script>
+
+    <!-- SignalR -->
+    <script src="Scripts/jquery.signalR-2.0.3.min.js"></script>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+</head>
+<body>
+    <div class="container">
+        <div role="navigation" ng-include="'webapp/common/layout/topnav.html'"></div>    
+    </div>    
+    <div class="container">        
+        <div class="row">
+            <div id="sidebar_menu" style="/*border:1px solid #DDD*/"  ng-include="'webapp/common/layout/sidebar.html'"></div>
+            <!--<div class="page-wrapper">-->
+            <div id="content" style="/*border:1px solid #000*/"  >
+                <div ng-view style="/*height:100%;height: calc(100% - 100px);*/"></div>
+            </div>
+            <div class="splash-container" ng-show="showSplash">
+                <div class="splash-panel">
+                    <i class="fa fa-spin fa-spinner fa-5x"></i><br /><br />Please Wait!
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<script src="http://misconnex.clientdemo.e9server.com/signalr/hubs"></script>-->
+    <!--<script src="http://localhost:4000/signalr/hubs"></script>-->
+    <script src="http://localhost:51111/signalr/hubs"></script>
+    <script>
+        (function () {
+            if (!window.console) {
+                window.console = {
+                    log: function () { }
+                }
+            }
+
+            "use strict";
+            //ALSO CHECK SIGNAL R FILE LINK
+            //var baseUrl = 'http://misconnex.clientdemo.e9server.com';
+            var baseUrl = 'http://localhost:51111';
+            //var baseUrl = 'http://localhost:4000';
+            //var baseUrl = '';
+            angular.element(document).ready(function () {
+                var accessToken = window.sessionStorage.getItem('ACCESS_TOKEN');
+                var interfaceMode;
+                if (!accessToken) {
+                    window.location = "/index.html";
+                } else {
+                    console.log('Bearer ' + accessToken);
+                    $.ajax({
+                        method: 'GET',
+                        url: baseUrl + '/api/Account/UserInfo',
+                        crossDomain: baseUrl != '',
+                        cache: false,
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken
+                        },
+                        success: function (user) {
+                            interfaceMode = 'tasklist.manage';
+                            var module = angular.module('tasklist.common');
+                            module.constant('$config', {
+                                ACCESS_TOKEN: accessToken,
+                                INTERFACE: interfaceMode,
+                                RESOURCE_HOST: baseUrl,
+                                API_ENDPOINT: baseUrl + '/api'
+                            });
+                            module.constant('$user', user);
+                            try
+                            {
+                                angular.bootstrap(document, [interfaceMode]);
+                            }
+                            catch (e) {
+                                console.error(e.stack || e.message || e);
+                            }
+                        },
+                        failure: function (error) {
+                            window.location = "/index.html";
+                        }
+                    });
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

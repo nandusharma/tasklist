@@ -1,0 +1,56 @@
+﻿<div ng-controller="SidebarController">
+    <section id="recentTasks" class="nav nav-sidebar">
+        <ul class="main-nav">
+            <li ng-click="setSelected('R', 1)" ng-class="{selected: isSelected('R',1)}"  ng-repeat="i in projects | filter:{IsDefault:true}" ><a ng-href="#/tasks?project={{i.ID}}""><span>inbox</span><span class="task_count">{{i.TaskCount}}</span></a></li>
+            <li ng-click="setSelected('R', 2)" ng-class="{selected: isSelected('R',2)}"><a ng-href="#"><span>today</span></a></li>
+            <li ng-click="setSelected('R', 3)" ng-class="{selected: isSelected('R',3)}"><a ng-href="#"><span>tomorrow</span></a></li>
+            <li ng-click="setSelected('R', 4)" ng-class="{selected: isSelected('R',4)}"><a ng-href="#"><span>this week</span></a></li>
+        </ul>
+    </section>
+    <section id="projects" class="nav nav-sidebar">
+        <div>
+            <div class="pull-left">projects </div>
+            <a ng-click="addNewProject()" class="btn-sm pull-right"><span class="glyphicon glyphicon-plus-sign"></span></a>
+            <div class="clearfix"></div>
+        </div>
+        
+        <ul class="main-nav">
+            <li class="dropdown" ng-repeat="p in projects | filter:{IsDefault:false}" ng-click="setSelected('P', p.ID)" ng-class="{selected: isSelected('P', p.ID)}">
+                <!--<a ng-href="#/tasks?project={{p.ID}}">{{p.Name}}<div class="task_count">{{p.TaskCount}}</div></a>
+                <span class="caret dropdown-toggle pull-right" style="position: absolute; top: 50%; right:10%" data-toggle="dropdown"></span>
+                <ul class="dropdown-menu pull-right" role="menu">
+                    <li><a href="#">Edit Project</a></li>
+                    <li><a href="#">Share Project</a></li>
+                    <li><a href="#">Delete Project</a></li>                    
+                </ul>-->
+                <div class="projectrow">                    
+                    <div class="project-left">
+                        <div class="fxac">
+                            <!--<div click-to-edit="p.Name">-->
+                                <div class="project-title"><a ng-href="#/tasks?project={{p.ID}}"><span edit-from-menu="p.Name"  save-function="saveProject()" cancel-function="cancelProjectEdit()" newitem="{{p.IsNew}}" isbeingedited="{{p.IsEdited}}"></span></a></div>
+                                <div ng-hide="p.IsEdited || p.IsNew" class="task_count">{{p.TaskCount}}</div>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="project-right" ng-hide="p.IsEdited || p.IsNew" >
+                        <span class="caret btn-md dropdown-toggle pull-right" data-toggle="dropdown"></span>
+                        <ul class="dropdown-menu pull-right" role="menu">
+                            <li><a ng-click="setProjectEditable()">Edit Project</a></li>
+                            <li><a href="#">Share Project</a></li>
+                            <li><a ng-click="deleteProject()">Delete Project</a></li>                    
+                        </ul>
+                    </div>                    
+                </div>
+            </li>
+            
+        </ul>
+    </section>
+    <section id="categories" class="nav nav-sidebar">
+        <div>categories <a href="#" class="pull-right btn-sm"><span class="glyphicon glyphicon-plus-sign"></span></a></div>
+        <ul class="main-nav" ng-repeat="c in categories">
+            <li ng-click="setSelected('C', c.ID)" ng-class="{selected: isSelected('C', c.ID)}">
+                <a ng-href="#categories/{{c.ID}}"> <span>{{c.Name}}</span></a>
+            </li>
+        </ul>
+    </section>
+</div>

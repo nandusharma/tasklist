@@ -1,0 +1,20 @@
+﻿<div ng-controller="TopNavController">
+    <div class="navbar-header">
+        <img src="../../../includes/images/new-task-list-200.png" style="margin:5px;height:45px" alt="tasklist" />
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+            <li><span class="glyphicon glyphicon-user"></span> {{username}}</li>
+            <li>
+                <a href="#" class="btn-lg"><span class="glyphicon glyphicon-bell"></span></a>
+            </li>
+            <li>
+                <a href="#" class="btn-lg"><span class="glyphicon glyphicon-cog"></span></a>
+            </li>
+            <li>
+                <a href="#" class="btn-lg" ng-click="logout()"><span class="glyphicon glyphicon-off"></span></a>
+            </li>
+        </ul>
+    </div>
+
+</div>

@@ -1,0 +1,110 @@
+.form-control .select2-choice {
+    border: 0;
+    border-radius: 2px;
+    height: 32px;
+}
+
+    .form-control .select2-choice .select2-arrow {
+        border-radius: 0 2px 2px 0;
+    }
+
+.select2-container .select2-choice .select2-arrow {
+    background: none;
+    border: 0;
+}
+
+.select2-container .select2-choice .select2-arrow b {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAGEElEQVR4Xu1cbeifUxjei714yUtboollUYSFsmEhL4nVRCl80DCs5oOWFGVbqG354AvyFhJaI42SaIuNIaWtNLWG5IOX+CAvEXm5rvp/svG/f/+dc5/z3Pd16mrt3/3c576u++r8fs/vnOeZPEkjtQKTU7MX+UkyQHITyAAyQHIFktPXCiADJFcgOX2tADJAcgWS09cKIAMkVyA5fa0AMkByBZLT1wogAyRXIDl9rQAyQHIFktPXCiADJFcgOX2tADJAcgWS09cKIAMkVyA5fa0AMkByBZLT1wogAyRXIDl9rQAyQHIFktPXCiADJFcgOX2tADJAcgWS09cKIAMkVyA5fa0AMkByBZLT1wogAyRXIDl9rQAygIsCx2GWtcCFwGxgqsusw5vkT5T8PbAFuAv4sjYFjxVgHkh8MNb42nwi5f8OZBYCn9ck5WGAl0HgypokAud+CdyursnPwwA/gcAhNUkEzv0juB1Wk5+HAb4GgaNqkgic+9va2nkY4AmQWBa4STWpPY3kN9acwMMAR4PAh8AxNYkEzM07gAXANzW5eRiA9Z8EbAeOqEkmUG7eAZwNfFabk5cByOM84E1gRm1SA8//G+q/BHjXg4enAcjnGuAFwHteDy1LzPEXklwLbCyRzJKjRSNWo7A1luISxtwNzvzF1G20MADnfApY6sZyGBM9gjJXeJfawgDkOA14beyzzptzj/O9iqKuArgX4DpaGYAkDwXeAU5zZdzfZDtREr8g8xdT99HSACQ7B+BGUdbfCHivz9u9r9w7PzZhawOwjDOArUC2/YIfwHkRsKtV8zlvDwZgHZcB/Bw8oKUYjnP/jrkuBd52nHOfU/ViABZ3M/B4a0Gc5r8J8/BOqPnoyQAU4wHgjuaq1C3gfqS/p+4U9uy9GYD1PAdcZ6cwqMhnUe1S4O9equ7NANRlJrAZOLcXkQrVwXN+/K7zR6F8RdL0aAASmwW8B5xYhGX7JB+jBH7j5wmfrkavBqBIxwPvA0d2pdjoxXA/n/f6X4x+af0rejYA2Z8FvAUcVF+KKjP8gqznAx9VyV4gae8GIEWeit0ATCnA1zMFf9e/AuCeR7djCAageHcC67tVcd+FLcefH+u95qEYgDo+BLhvl06wgQ/iupUTvNb1siEZgI+T8SGTJa4KjT4Za+THFk/3dD+GZACKyQ2jbcDpnSrLW9eLgV87rW+vsoZmABLgMXNuIR/bmch7UM85AB/uHMwYogEo7skAj5kf3onSbse4S/MdqgGowwXAG8D00qKMmM/1GPeItY0bPmQDkNwNQMttVX7R41H3F8dVutOAoRuAst4LtNpe5Usc1nXaW1NZEQxADs8A15sYlwt6GKluK5euTaYIBqByPGb+OnCRk4zNjnGX5hfFANSFx8z5PN2ppUX6V74d+D+Pcf9ceR6X9JEMQMHmAtxCrvVCCh7j5nt7+NKLECOaAdiUMwEeMz+4cId4jJunlD4pnLdpuogGoKCLgVeAUq+j6+YYd2m3RDUAdboVeLSQYHxNC1/XEm5ENgCbxW3Z2/eza/fh+lX7maPby6MbgKeI+Csdn7ydyOjuGPdESPzfNdENQO4HAjySzYOZowweTb8c6OoY9ygELLEZDEAd+H5i7tWfYBEFMd0e4zbWbw7LYgAKcgrA9xGMt4XMrV3u639qVnHAgZkMwDbNBzYBc/+jZ7vxd57k5b8pRjYDsKn8TnALwOcPaQQ+p8f38T0PPAnwnj/NyGiANM21EJUBLCoFjpEBAjfXQk0GsKgUOEYGCNxcCzUZwKJS4BgZIHBzLdRkAItKgWNkgMDNtVCTASwqBY6RAQI310JNBrCoFDhGBgjcXAs1GcCiUuAYGSBwcy3UZACLSoFjZIDAzbVQkwEsKgWOkQECN9dCTQawqBQ4RgYI3FwLNRnAolLgGBkgcHMt1GQAi0qBY2SAwM21UJMBLCoFjpEBAjfXQk0GsKgUOEYGCNxcCzUZwKJS4BgZIHBzLdRkAItKgWNkgMDNtVCTASwqBY6RAQI310JNBrCoFDhGBgjcXAs1GcCiUuAYGSBwcy3UZACLSoFj/gEYFIaBZme+XAAAAABJRU5ErkJggg==');
+    background-repeat: no-repeat;
+    -moz-background-size: 20px 20px;
+    -o-background-size: 20px 20px;
+    -webkit-background-size: 20px 20px;
+    background-size: 20px 20px;
+    background-position: right center;
+}
+
+.form-control.select2-container {
+    height: auto;
+    padding: 0;
+}
+
+    .form-control.select2-container.select2-dropdown-open {
+        border-color: #5897FB;
+        border-radius: 3px 3px 0 0;
+    }
+
+        .form-control .select2-container.select2-dropdown-open .select2-choices {
+            border-radius: 3px 3px 0 0;
+        }
+
+    .form-control.select2-container .select2-choices {
+        border: 0 !important;
+        border-radius: 3px;
+    }
+
+    .select2-choices .select2-search-choice {
+        width: 96%;
+    }
+
+.control-group.warning .select2-container .select2-choice,
+.control-group.warning .select2-container .select2-choices,
+.control-group.warning .select2-container-active .select2-choice,
+.control-group.warning .select2-container-active .select2-choices,
+.control-group.warning .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.warning .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.warning .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #C09853 !important;
+}
+
+    .control-group.warning .select2-container .select2-choice div {
+        border-left: 1px solid #C09853 !important;
+        background: #FCF8E3 !important;
+    }
+
+.control-group.error .select2-container .select2-choice,
+.control-group.error .select2-container .select2-choices,
+.control-group.error .select2-container-active .select2-choice,
+.control-group.error .select2-container-active .select2-choices,
+.control-group.error .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.error .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.error .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #B94A48 !important;
+}
+
+    .control-group.error .select2-container .select2-choice div {
+        border-left: 1px solid #B94A48 !important;
+        background: #F2DEDE !important;
+    }
+
+.control-group.info .select2-container .select2-choice,
+.control-group.info .select2-container .select2-choices,
+.control-group.info .select2-container-active .select2-choice,
+.control-group.info .select2-container-active .select2-choices,
+.control-group.info .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.info .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.info .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #3A87AD !important;
+}
+
+    .control-group.info .select2-container .select2-choice div {
+        border-left: 1px solid #3A87AD !important;
+        background: #D9EDF7 !important;
+    }
+
+.control-group.success .select2-container .select2-choice,
+.control-group.success .select2-container .select2-choices,
+.control-group.success .select2-container-active .select2-choice,
+.control-group.success .select2-container-active .select2-choices,
+.control-group.success .select2-dropdown-open.select2-drop-above .select2-choice,
+.control-group.success .select2-dropdown-open.select2-drop-above .select2-choices,
+.control-group.success .select2-container-multi.select2-container-active .select2-choices {
+    border: 1px solid #468847 !important;
+}
+
+    .control-group.success .select2-container .select2-choice div {
+        border-left: 1px solid #468847 !important;
+        background: #DFF0D8 !important;
+    }

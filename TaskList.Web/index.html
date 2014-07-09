@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Task List</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link rel="shortcut icon" href="/includes/bundles/startup-framework/flat-ui/images/favicon.ico">
+    <!--<link rel="stylesheet" href="/includes/bundles/startup-framework/flat-ui/bootstrap/css/bootstrap.css">-->
+    <link rel="stylesheet" href="/includes/bundles/startup-framework/flat-ui/css/flat-ui.css">
+    <!-- Using only with Flat-UI (free)-->
+    <link rel="stylesheet" href="/includes/bundles/startup-framework/common-files/css/icon-font.css">
+    <!-- end -->
+    <link rel="stylesheet" href="/content/css/lumen-bootstrap.css">
+    <link rel="stylesheet" href="/includes/css/style.css">
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header-11">
+            <div class="container">
+                <div class="row">
+                    <div class="navbar col-sm-12" role="navigation">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle"></button>
+                            <a class="brand" href="#">
+                                <img src="includes/images/new-task-list-300.png" width="200" alt="tasklist-logo" />
+                            </a>
+                        </div>
+                        <div class="navbar-collapse collapse pull-right">
+                            <ul class="nav navbar-nav pull-left">
+                                <li class="active"><a href="#">HOME</a></li>
+                                <li><a href="#">COMPANY</a></li>
+                                <li><a href="#">PORTFOLIO</a></li>
+                                <li><a href="#">BLOG</a></li>
+                                <li><a href="#">CONTACT</a></li>
+                            </ul>
+                            <form class="navbar-form pull-left" id="signinform">
+                                <a class="btn btn-warning" href="#" data-toggle="modal" data-backdrop="false" data-target=".bs-example-modal-sm">SIGN IN</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="signin-form" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <form onsubmit="onLoginSubmit(event)">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title">Please Login</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">@</span>
+                                <input type="text" id="username" class="form-control" ng-model="user.UserName" placeholder="Username" />
+                                <p class="help-block hide" ng-if="setPassword.NewPassword && setPassword.NewPassword.length < 6">User Name cannot be blank</p>
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">
+                                    <img src="includes/images/key.png" style="width: 18px; height: 18px" /></span>
+                                <input type="password" id="password" class="form-control" ng-model="user.Password" placeholder="Password" />
+                                <p class="help-block hide" ng-if="setPassword.NewPassword && setPassword.NewPassword !== setPassword.ConfirmPassword">Passwords must be 6+ characters.</p>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary" ng-disabled="!setPassword.NewPassword || setPassword.NewPassword.length < 6 || setPassword.NewPassword !== setPassword.ConfirmPassword">Login</button>
+                            <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <section id="signup" class="header-11-sub bg-midnight-blue">
+            <div class="background">
+                &nbsp;
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div>
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+                        </div>
+                    </div>
+                    <div class="col-sm-4 col-sm-offset-1 ">
+                        <h3>Signup for this awesome service</h3>
+                        <p>
+                            At vero eos et accusamus et iusto odio dignissimos 
+                        </p>
+                        <p>
+                            atque corrupti quos dolores et quas molestias excepturi 
+                        </p>
+                        <div class="signup-form">
+                            <form onsubmit="onSignup(event)">
+                                <div class="form-group">
+                                    <input class="form-control" id="signupuser" type="text" placeholder="Your E-mail" />
+                                </div>
+                                <div class="form-group">
+                                    <div>
+                                        <input type="password" id="signuppassword" class="form-control" placeholder="Password" />
+                                    </div>
+                                    <div>
+                                        <input type="password" class="form-control" placeholder="Confirmation" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-primary">Sign Up</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="additional-links">
+                            By signing up you agree to <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="marketing" class="container marketing">
+            <div class="row">
+                <div class="col-lg-4">
+                    <img src="includes/images/responsive-devices.png" alt="works on all devices" />
+                    <h4>Multi Device Support</h4>
+                    <p>
+                        Ne vim tota eruditi accommodare, at minim molestie constituto pro, vide admodum adipisci eam ei. 
+                    </p>
+                    <p>
+                        <a class="btn btn-default" href="#" role="button">View Details</a>
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <img src="includes/images/notifications.png" alt="get instant notifications" />
+                    <h4>Instant Notifications</h4>
+                    <p>
+                        Quo ad tollit volumus contentiones, no eum utinam dicunt efficiendi. Ea pro equidem honestatis.
+                    </p>
+                    <p>
+                        <a class="btn btn-default" href="#" role="button">View Details</a>
+                    </p>
+                </div>
+                <div class="col-lg-4">
+                    <img src="includes/images/sync.png" alt="sync across devices" />
+                    <h4>Auto Sync</h4>
+                    <p>
+                        An illud menandri his. Cetero mnesarchum sea ne. Pro mazim reprimique ad. scribentur sed te, ei pro vide recteque.
+                    </p>
+                    <p>
+                        <a class="btn btn-default" href="#" role="button">View Details</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+        <section id="signin" class="jumbotron">
+            <div class="panel panel-default  span6 col-lg-offset-4" style="width:600px">
+                    <div class="panel-heading">
+                        Thank you for resgistering with us. Please sign in to your account.
+                    </div>
+                    <div class="panel-body">
+                        <form onsubmit="onLoginSubmit(event)">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Sign in to access your task list</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">@</span>
+                                    <input type="text" id="formusername" class="form-control" ng-model="user.UserName" placeholder="Username" />
+                                    <!--<p class="help-block hide" ng-if="setPassword.NewPassword && setPassword.NewPassword.length < 6">User Name cannot be blank</p>-->
+                                </div>
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon">
+                                        <img src="includes/images/key.png" style="width: 18px; height: 18px" /></span>
+                                    <input type="password" id="formpassword" class="form-control" ng-model="user.Password" placeholder="Password" />
+                                    <!--<p class="help-block hide" ng-if="setPassword.NewPassword && setPassword.NewPassword !== setPassword.ConfirmPassword">Passwords must be 6+ characters.</p>-->
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" ng-disabled="!setPassword.NewPassword || setPassword.NewPassword.length < 6 || setPassword.NewPassword !== setPassword.ConfirmPassword">Login</button>
+                                <!--<button type="button" class="btn" data-dismiss="modal">Cancel</button>-->
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </section>
+        <!-- footer-2 -->
+        <footer class="footer-2 bg-midnight-blue">
+            <div class="container">
+                <nav class="pull-left">
+                    <ul>
+                        <li class="active">
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Company</a>
+                        </li>
+                        <li>
+                            <a href="#">Portfolio</a>
+                        </li>
+                        <li>
+                            <a href="#">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="social-btns pull-right">
+                    <a href="#">
+                        <div class="fui-vimeo"></div>
+                        <div class="fui-vimeo"></div>
+                    </a>
+                    <a href="#">
+                        <div class="fui-facebook"></div>
+                        <div class="fui-facebook"></div>
+                    </a>
+                    <a href="#">
+                        <div class="fui-twitter"></div>
+                        <div class="fui-twitter"></div>
+                    </a>
+                </div>
+                <div class="additional-links">
+                    Be sure to take a look to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/includes/bundles/startup-framework/common-files/js/jquery-1.10.2.min.js"></script>
+    <script src="/includes/bundles/startup-framework/flat-ui/js/bootstrap.min.js"></script>
+    <script src="/includes/bundles/startup-framework/common-files/js/modernizr.custom.js"></script>
+    <script src="/includes/bundles/startup-framework/common-files/js/page-transitions.js"></script>
+    <script src="/includes/bundles/startup-framework/common-files/js/startup-kit.js"></script>
+    <!--[if lte IE 9]>
+    <script>
+        if (window.XDomainRequest) {
+            jQuery.ajaxTransport(function (s) {
+                if (s.crossDomain && s.async) {
+                    if (s.timeout) {
+                        s.xdrTimeout = s.timeout;
+                        delete s.timeout;
+                    }
+                    var xdr;
+                    return {
+                        send: function (_, complete) {
+                            function callback(status, statusText, responses, responseHeaders) {
+                                xdr.onload = xdr.onerror = xdr.ontimeout = jQuery.noop;
+                                xdr = undefined;
+                                complete(status, statusText, responses, responseHeaders);
+                            }
+                            xdr = new XDomainRequest();
+                            xdr.onload = function () {
+                                callback(200, "OK", { text: xdr.responseText }, "Content-Type: " + xdr.contentType);
+                            };
+                            xdr.onerror = function () {
+                                callback(404, "Not Found");
+                            };
+                            xdr.onprogress = jQuery.noop;
+                            xdr.ontimeout = function () {
+                                callback(0, "timeout");
+                            };
+                            xdr.timeout = s.xdrTimeout || Number.MAX_VALUE;
+                            xdr.open(s.type, s.url);
+                            xdr.send((s.hasContent && s.data) || null);
+                        },
+                        abort: function () {
+                            if (xdr) {
+                                xdr.onerror = jQuery.noop;
+                                xdr.abort();
+                            }
+                        }
+                    };
+                }
+            });
+        }
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        //var baseUrl = 'http://localhost:4000';
+        // var baseUrl = 'http://misconnex.clientdemo.e9server.com';
+        var baseUrl = 'http://localhost:51111';
+        //var baseUrl = '';
+        var isSignupComplete = false;
+        $(function () {
+            $('#signin').hide();
+        });
+
+        function onLoginSubmit(event) {
+            event.preventDefault();
+
+            var username = (isSignupComplete) ? $('#formusername').val() : $('#username').val();
+            var password = (isSignupComplete) ? $('#formpassword').val() : $('#password').val();
+
+            var credentials = {
+                username: username,
+                password: password,
+                grant_type: 'password'
+            };
+
+            attemptLogin(credentials);
+        }
+
+        function attemptLogin(credentials) {
+            $('#signin-form').removeClass('animate shake');
+            $.ajax({
+                method: 'POST',
+                url: baseUrl + '/Token',
+                crossDomain: baseUrl != '',
+                data: credentials,
+                cache: false,
+                success: function (token) {
+                    sessionStorage.setItem("ACCESS_TOKEN", token.access_token);
+                    window.location = "/default.html#/tasks";
+                },
+                error: function (error) {
+                    $('#signin-form').addClass('animated shake');
+                }
+            });
+        }
+
+        function onSignup(event) {
+            event.preventDefault();
+            var username = $('#signupuser').val();
+            var password = $('#signuppassword').val();
+
+            var credentials = {
+                username: username,
+                password: password,
+                repeatPassword: password,
+                email: username
+            };
+
+            signupUser(credentials);
+        }
+
+        function signupUser(credentials) {
+            $('.signup-form').removeClass('animate shake');
+            $.ajax({
+                method: 'POST',
+                url: baseUrl + '/api/Account/Create',
+                crossDomain: baseUrl != '',
+                data: credentials,
+                cache: false,
+                success: function () {
+                    /*var loginCredentials = {
+                        username: credentials.username,
+                        password: credentials.password
+                    }
+                    attemptLogin(loginCredentials);*/
+                    isSignupComplete = true;
+                    $('#signinform').fadeToggle();
+                    $('#signup').fadeToggle();
+                    $('#marketing').fadeToggle();
+                    $('#signin').fadeToggle();
+                },
+                error: function (error) {
+                    $('.signup-form').addClass('animated shake');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

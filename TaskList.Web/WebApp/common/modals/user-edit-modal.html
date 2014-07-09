@@ -1,0 +1,100 @@
+﻿<div>
+    <div class="modal-header">
+        <button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title">User Edit</h4>
+    </div>
+    <div class="modal-body">
+        <form name="userForm" novalidate>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" class="form-control" ng-model="user.UserName" required ng-disabled="editMode == 'EDIT'" ng-change="checkUnique(user.UserName)" ng-minlength="6" ng-pattern="/^[a-z0-9]+$/i" />
+                        <p class="help-block" ng-show="userForm.username.$error.required && (userForm.username.$dirty || userForm.$showErrors)">Username is required</p>
+                        <p class="help-block" ng-show="userForm.username.$error.minlength && (userForm.username.$dirty || userForm.$showErrors)">Username must be 6+ characters</p>
+                        <p class="help-block" ng-show="userForm.username.$error.pattern && (userForm.username.$dirty || userForm.$showErrors)">Username must only contain alphanumeric characters</p>
+                        <p class="help-block" ng-show="unique.checking"><i class="icon-spinner green-sea"></i> Checking...</p>
+                        <p class="help-block" ng-show="unique.failed"><i class="green-sea">✘</i>  Username Not Unique</p>
+                        <p class="help-block" ng-show="unique.success"><i class="green-sea">✔</i>  Username OK</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" ng-model="user.Email" required />
+                        <p class="help-block" ng-show="userForm.email.$error.required && (userForm.email.$dirty || userForm.$showErrors)">Email is required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role" ng-model="user.UserType" class="form-control" required ng-options="r.Value as r.Title for r in roles">
+                            <option value="">Select..</option>
+                        </select>
+                        <p class="help-block" ng-show="userForm.role.$error.required && (userForm.role.$dirty || userForm.$showErrors)">Role is required</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-show="editMode == 'NEW'">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" ng-model="user.Password" ng-required="editMode == 'NEW'" ng-minlength="6" />
+                        <p class="help-block" ng-show="userForm.password.$error.required && (userForm.password.$dirty || userForm.$showErrors)">Password is required</p>
+                        <p class="help-block" ng-show="userForm.password.$error.minlength && (userForm.password.$dirty || userForm.$showErrors)">Password must be 6+ characters</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Repeat</label>
+                        <input type="password" name="repeatPassword" class="form-control" ng-model="user.RepeatPassword" ng-required="editMode == 'NEW'" />
+                        <p class="help-block" ng-show="(user.Password != user.RepeatPassword) && ((userForm.password.$dirty && userForm.repeatPassword.$dirty) || userForm.$showErrors)">Passwords must match.</p>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="editMode == 'EDIT' && passwordChange != null">
+                <form name="passwordChangeForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" name="password" class="form-control" ng-model="passwordChange.NewPassword" />
+                                <p class="help-block" ng-show="!passwordChange.NewPassword">Password is required</p>
+                                <p class="help-block" ng-show="passwordChange.NewPassword && passwordChange.NewPassword.length < 6">Password must be 6+ characters</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Repeat</label>
+                                <input type="password" name="repeatPassword" class="form-control" ng-model="passwordChange.ConfirmPassword" />
+                                <p class="help-block" ng-show="passwordChange.NewPassword && (passwordChange.NewPassword != passwordChange.ConfirmPassword)">Passwords must match.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <input type="button" class="btn btn-danger" value="Cancel" ng-click="passwordChange = null" />
+                            <input type="button" class="btn btn-success" value="Set Password" ng-click="setNewPassword(passwordChange)" ng-disabled="!passwordChange.NewPassword || passwordChange.NewPassword.length < 6 || passwordChange.ConfirmPassword != passwordChange.NewPassword" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success pull-left" ng-click="passwordChange = {}" ng-show="editMode == 'EDIT' && passwordChange == null">
+            <i class="icon-key" style="font-size:14px;"></i> Change Password
+        </button>
+        <button class="btn btn-success pull-left" ng-click="unlockUser(user)" ng-show="editMode == 'EDIT' && user.LockoutEnabled">
+            <i class="icon-unlocked" style="font-size:14px;"></i> Activate
+        </button>
+        <button class="btn btn-danger pull-left" ng-click="lockUser(user)" ng-show="editMode == 'EDIT' && !user.LockoutEnabled">
+            <i class="icon-lock3" style="font-size:14px;"></i> Disable
+        </button>
+        <button class="btn btn-success" ng-show="editMode == 'EDIT' && passwordChange == null" ng-click="saveUser(user)" ng-disabled="userForm.$error.required"><i class="icon-file"></i> Save</button>
+        <button class="btn btn-success" ng-show="editMode == 'NEW'" ng-click="saveUser(user)" ng-disabled="userForm.$error.required || userForm.$error.minlength || unique == null || unique.failed || (user.Password != user.RepeatPassword)"><i class="icon-file"></i> Save</button>
+        <button class="btn btn-warning" ng-click="cancel()"><i class="icon-notification"></i> Cancel</button>
+    </div>
+</div>
