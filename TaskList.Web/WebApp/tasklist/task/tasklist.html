@@ -4,11 +4,11 @@
             <div class="projecttitle pull-left" ng-class="{hide: isDefaultProject == true}">{{projectName}}</div>
             <div class="projecttitle pull-right">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click="addNewTask()"><span class="glyphicon glyphicon-plus"></button>
-                    <button type="button" class="btn btn-default disabled"><span class="glyphicon glyphicon-arrow-up"></button>
-                    <button type="button" class="btn btn-default disabled"><span class="glyphicon glyphicon-arrow-down"></button>
-                    <button type="button" class="btn btn-default disabled"><span class="glyphicon glyphicon-share"></button>
-                    <button type="button" class="btn btn-default disabled"><span class="glyphicon glyphicon-trash"></button>
+                    <button type="button" class="btn btn-default" ng-click="addNewTask()" tooltip="add a new task" tooltip-placement="bottom"><span class="glyphicon glyphicon-plus"></button>
+                    <button type="button" class="btn btn-default disabled" tooltip="move the selected tasks above" tooltip-placement="bottom"><span class="glyphicon glyphicon-arrow-up"></button>
+                    <button type="button" class="btn btn-default disabled" tooltip="move the selected tasks below" tooltip-placement="bottom"><span class="glyphicon glyphicon-arrow-down"></button>
+                    <button type="button" class="btn btn-default disabled" tooltip="move the selected tasks to another project" tooltip-placement="bottom"><span class="glyphicon glyphicon-share"></button>
+                    <button type="button" class="btn btn-default disabled" tooltip="delete the selected tasks" tooltip-placement="bottom"><span class="glyphicon glyphicon-trash"></button>
                 </div>
             </div>
         </div>
@@ -32,28 +32,58 @@
                         </td>
                     </tr>
                 </table>-->
-        <ul class="task-list">
-            <li ng-repeat="t in tasks">                
-                <div class="taskrow">
-                    <div class="task-left"><input type="checkbox" ng-click="selectTask()" /></div>
-                    <div class="task-right">
-                        <div class="fxac">
-                            <div class="task-title"><span ng-class="{selectedtask: t.IsSelected == true}" click-to-edit="t.Name" save-function="saveTask()" cancel-function="cancelTask()" newitem="{{t.IsNew}}"></span></div>
-                            <div class="task-deadline"><span>&nbsp;</span></div>
-                            <div class="task-project"><span>&nbsp;</span></div>
-                            <div class="task-options">
-                                <div class="btn-group">
-                                    <a ><span class="glyphicon glyphicon-time"></a>
-                                    <a ><span class="glyphicon glyphicon-chevron-up"></a>
-                                    <a ><span class="glyphicon glyphicon-chevron-down"></a>
-                                    <a ><span class="glyphicon glyphicon-share-alt"></a>
-                                    <a ng-click="deleteTask()"><span class="glyphicon glyphicon-trash"></a>
+        <div style="min-height:200px">
+            <ul class="task-list">
+                <li ng-repeat="t in tasks | filter:{IsSelected:false}">
+                    <div class="taskrow">
+                        <div class="task-left">
+                            <input type="checkbox" ng-click="selectTask()" tooltip="mark this task as complete" tooltip-placement="bottom" ng-model="t.IsSelected" /></div>
+                        <div class="task-right">
+                            <div class="fxac">
+                                <div class="task-title"><span ng-class="{selectedtask: t.IsSelected == true}" click-to-edit="t.Name" save-function="saveTask()" cancel-function="cancelTask()" newitem="{{t.IsNew}}"></span></div>
+                                <div class="task-deadline"><span>&nbsp;</span></div>
+                                <div class="task-project"><span>&nbsp;</span></div>
+                                <div class="task-options">
+                                    <div class="btn-group">
+                                        <a tooltip="set a reminder" tooltip-placement="bottom"><span class="glyphicon glyphicon-time"></a>
+                                        <a tooltip="move this task above" tooltip-placement="bottom"><span class="glyphicon glyphicon-chevron-up"></a>
+                                        <a tooltip="move this task below" tooltip-placement="bottom"><span class="glyphicon glyphicon-chevron-down"></a>
+                                        <a tooltip="move this task to another project" tooltip-placement="bottom"><span class="glyphicon glyphicon-share-alt"></a>
+                                        <a tooltip="delete this task" tooltip-placement="bottom" ng-click="deleteTask()"><span class="glyphicon glyphicon-trash"></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="completed-tasks" ng-hide="(tasks|filter:{IsSelected:true}).length <= 0">
+            <label class="completed-task-title">Completed Tasks:</label>
+            <ul class="task-list">
+                <li ng-repeat="t in tasks | filter:{IsSelected:true}">
+                    <div class="taskrow">
+                        <div class="task-left">
+                            <input type="checkbox" ng-click="selectTask()" tooltip="mark this task as not complete" tooltip-placement="bottom" /></div>
+                        <div class="task-right">
+                            <div class="fxac">
+                                <div class="task-title"><span ng-class="{selectedtask: t.IsSelected == true}" click-to-edit="t.Name" save-function="saveTask()" cancel-function="cancelTask()" newitem="{{t.IsNew}}"></span></div>
+                                <div class="task-deadline"><span>&nbsp;</span></div>
+                                <div class="task-project"><span>&nbsp;</span></div>
+                                <div class="task-options">
+                                    <div class="btn-group">
+                                        <a tooltip="set a reminder" tooltip-placement="bottom"><span class="glyphicon glyphicon-time"></a>
+                                        <a tooltip="move this task above" tooltip-placement="bottom"><span class="glyphicon glyphicon-chevron-up"></a>
+                                        <a tooltip="move this task below" tooltip-placement="bottom"><span class="glyphicon glyphicon-chevron-down"></a>
+                                        <a tooltip="move this task to another project" tooltip-placement="bottom"><span class="glyphicon glyphicon-share-alt"></a>
+                                        <a tooltip="delete this task" tooltip-placement="bottom" ng-click="deleteTask()"><span class="glyphicon glyphicon-trash"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </section>
 </div>

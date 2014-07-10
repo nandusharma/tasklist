@@ -20,7 +20,8 @@
     module.constant('$signalR', $);
 
     module.controller('TopNavController', ['$scope', '$events', '$location', '$user', topNavController]);
-    module.controller('SidebarController', ['$scope', '$config', '$user', 'Api', sidebarController]);
+    module.controller('SidebarController', ['$scope', '$config', '$user', 'Api', 'Modal', sidebarController]);
+    module.controller('ShareProjectModalController', ['$scope', '$modalInstance', 'modalConfig', 'Api', '$http', shareProjectModalController]);
 
     module.directive('clickToEdit', inlineEdit);
     module.directive('editFromMenu', inlineEditFromMenu);
@@ -32,211 +33,7 @@
     module.service('Modal', ['$modal', modalService]);
     module.service('$common', ['$rootScope', '$events', '$config', '$location', '$timeout', '$q', '$http', '$window', 'Api', 'Error', 'Modal', '$user', commonService]);
     module.service('RequestInterceptor', ['$rootScope', '$q', '$config', requestInterceptor]);
-
-    function _baseTableController($scope, $filter, $timeout, $config, $window) {
-        $scope.data = [];
-        $scope.groups = [];
-        $scope.searchText = null;
-        $scope.showInactive = true;
-        $scope.dataReady = false;
-        $scope.viewFormat = 'TABLE';
-
-        $scope.currentOrder = null;
-        $scope.currentFilter = null;
-        $scope.currentGrouping = null;
-        $scope.currentExpandedRow = null;
-
-        $scope.rawData = [];
-
-        var viewStorageKey = null;
-
-        $scope.setData = function (data) {
-            $scope.rawData = data;
-            if (data) {
-                applyResult();
-                $scope.dataReady = true;
-            } else {
-                $scope.data = [];
-                $scope.dataReady = false;
-            }
-        }
-
-        $scope.setViewStorageKey = function (key) {
-            viewStorageKey = key;
-            var current = $window.localStorage.getItem(key);
-            if (current && current === 'TABLE' || current === 'CARDS')
-                $scope.viewFormat = current;
-        }
-
-        $scope.orderBy = function (field) {
-            if ($scope.currentOrder === field) {
-                field = '-' + field;
-            }
-            $scope.currentOrder = field;
-            applyResult();
-        }
-
-        $scope.filter = function (filter) {
-            $scope.currentFilter = filter;
-            applyResult();
-        }
-
-        $scope.groupBy = function (field) {
-            $scope.currentGrouping = field;
-            applyResult();
-        }
-
-        $scope.switchViewFormat = function (format) {
-            $scope.viewFormat = format;
-            if (viewStorageKey)
-                $window.localStorage.setItem(viewStorageKey, format);
-        }
-
-        $scope.toggleRowExpand = function (item, closeOthers) {
-            if (item.$expanded) {
-                item.$expanded = false;
-            } else {
-                if (closeOthers) {
-                    angular.forEach($scope.data, function (i) {
-                        i.$expanded = false;
-                    });
-                }
-                item.$expanded = true;
-            }
-
-        };
-
-        $scope.closeRowExpands = function () {
-            angular.forEach($scope.data, function (value) {
-                value.$expanded = false;
-            });
-        }
-
-        var debounceDelay = null;
-        $scope.$watch('searchText', function (newValue) {
-            if (debounceDelay != null) {
-                $timeout.cancel(debounceDelay);
-            }
-
-            debounceDelay = $timeout(function () {
-                $scope.filter(newValue);
-            }, $config.DEBOUNCE_INPUT_DELAY);
-        });
-
-        $scope.$watch('showInactive', function (newValue) {
-            applyResult();
-        });
-
-        $scope.applyResult = applyResult;
-
-        function applyResult() {
-            $scope.closeRowExpands();
-
-            var result = $scope.rawData;
-            if (!$scope.showInactive) {
-                result = result.filter(function (item) { return item.Active == true; });
-            }
-            if ($scope.currentFilter) {
-                result = $filter('filter')(result, $scope.currentFilter);
-            }
-            if ($scope.currentOrder) {
-                var reverse = false;
-                var order = 'Id';
-                if ($scope.currentOrder[0] == '-') {
-                    reverse = true;
-                    order = $scope.currentOrder.substring(1);
-                } else {
-                    order = $scope.currentOrder;
-                }
-                result = result.sort(function (item1, item2) {
-                    var a, b;
-                    if (order.indexOf('.') == -1) {
-                        a = item1[order] || '';
-                        b = item2[order] || '';
-                    } else {
-                        var firstPart = order.split('.')[0];
-                        var secondPart = order.split('.')[1];
-                        a = (item1[firstPart]) ? item1[firstPart][secondPart] : '';
-                        b = (item2[firstPart]) ? item2[firstPart][secondPart] : '';
-                    }
-                    if (a == null && b == null)
-                        return 0;
-                    else if (a == null)
-                        return -1;
-                    else if (b == null)
-                        return 1;
-                    else if (typeof a == 'string' && typeof b == 'string') {
-                        var stringA = a.toLowerCase(), stringB = b.toLowerCase()
-                        if (stringA < stringB)
-                            return (reverse) ? 1 : -1;
-                        if (stringA > stringB)
-                            return (reverse) ? -1 : 1;
-                        return 0;
-                    } else if (typeof a == 'number' && typeof b == 'number') {
-                        if (!reverse) {
-                            return a - b;
-                        } else {
-                            return b - a;
-                        }
-                    } else if (typeof a == 'boolean' && typeof b == 'boolean') {
-                        if (reverse) {
-                            return ((a) ? 100 : 50) - ((b) ? 100 : 50);
-                        } else {
-                            return ((b) ? 100 : 50) - ((a) ? 100 : 50);
-                        }
-                    } else {
-                        return 0;
-                    }
-                });
-            }
-            if ($scope.currentGrouping) {
-                $scope.groups = [];
-                var initials = false;
-                var datetime = false;
-                var current = $scope.currentGrouping;
-                if (current[0] == '-') {
-                    initials = true;
-                    current = current.substring(1);
-                }
-                if (current[0] == '*') {
-                    datetime = true;
-                    current = current.substring(1);
-                }
-                angular.forEach(result, function (item, key) {
-                    var value;
-                    if (current.indexOf('.') == -1) {
-                        value = (item[current] || "None").toString();
-                    } else {
-                        var split = current.split('.');
-                        var backup = {};
-                        backup[split[1]] = "None"
-                        value = (item[split[0]] || backup)[split[1]].toString();
-                    }
-                    if (initials)
-                        value = value[0].toUpperCase();
-                    if (datetime)
-                        value = new moment(value).startOf('day').format('DD/MM/YYYY');
-                    if (value == 'true')
-                        value = 'True';
-                    if (value == 'false')
-                        value = 'False';
-                    var group = $scope.groups.filter(function (g) { return g.name == value; });
-                    if (group.length == 0) {
-                        $scope.groups.push({
-                            name: value,
-                            items: [item]
-                        });
-                    } else {
-                        group[0].items.push(item);
-                    }
-                });
-            } else {
-                $scope.groups = [{ name: 'All', items: result }];
-            }
-            $scope.data = result;
-        };
-    }
-
+    
     function topNavController($scope, $events, $location, $user) {
         $scope.logout = $user.logout;
         $scope.pageTitle = "tasklist - manage your tasks with ease";
@@ -248,23 +45,13 @@
             $scope.pageIcon = args.icon;
         });
 
-        /*$scope.shouldShowBack = function () {
-            var loc = $location.path();
-            return (loc.split('/').length > 2);
-        };
-
-        $scope.goBack = function () {
-            var loc = $location.path();
-            $location.path('/' + loc.split('/')[1]);
-        };*/
-
         $scope.logout = function () {
             window.location = "/index.html";
             window.sessionStorage.clear();
         };
     }
 
-    function sidebarController($scope, $config, $user, Api) {
+    function sidebarController($scope, $config, $user, Api, Modal, $http) {
         $scope.user = $user;
         $scope.selectionType = 'R';
         $scope.selectedIndex = 1;
@@ -294,7 +81,7 @@
 
         $scope.addNewProject = function () {
             $scope.isNewProjectAdded = true;
-            $scope.projects.push({ "Name": "My New Project", "IsDefault": "false",  "IsNew": true, "IsEdited": false, "Order": $scope.projects.length })
+            $scope.projects.push({ "Name": "My New Project", "IsDefault": "false", "IsShared": false, "IsNew": true, "IsEdited": false, "Order": $scope.projects.length })
         };
 
         $scope.setProjectEditable = function () {
@@ -338,6 +125,80 @@
                     }
                 }
             }
+        };
+
+        $scope.openShareProjectModal = openShareProjectModal;
+
+        function openShareProjectModal(project) {            
+            Modal.shareProject(project).then(function (result) {
+                debugger; var test = "";
+            });
+        }
+    }
+
+    function shareProjectModalController($scope, $modalInstance, modalConfig, Api, $http) {
+        $scope.project = modalConfig.project;
+        $scope.selected = "";
+        $scope.users = [];
+        $scope.selectedUsers = []
+
+        Api.User.getAllUsers({}, function (data) {
+            $scope.users = [];
+                angular.forEach(data, function (item) {
+                    $scope.users.push(item.UserName);
+                });
+                return $scope.users;
+            }, function (exception) {
+            //Error.error(exception);
+            });
+
+        $scope.addSelectedUser = function ($item, $model, $label) {
+            if ($label != undefined && $label.length > 0) {
+                $scope.selectedUsers.push($label);
+                $label = "";
+            }
+        }
+
+        $scope.removeUser = function () {
+            var user = this.user;
+            for (var i = $scope.selectedUsers.length-1; i > 0; i--) {
+                if ($scope.selectedUsers[i] === user) {
+                    $scope.selectedUsers.splice(i,1);
+                }
+            }
+        }
+
+        //$scope.getUsers = function (val) {
+            
+        //    return Api.User.getAllUsers({ userID: val }, function (data) {
+        //        var users = [];
+        //        angular.forEach(data, function (item) {
+        //            users.push(item.UserName);
+        //        });
+        //        return users;
+        //    }, function (exception) {
+        //        //Error.error(exception);
+        //    });
+        //    ///*return $http.get('http://localhost:51111/api/account/getallusers', {
+        //    //    params: {
+        //    //        userID: val,
+        //    //    }
+        //    //}).then(function (res) {
+        //    //    var users = [];
+        //    //    angular.forEach(res, function (item) {
+        //    //        users.push(item.UserName);
+        //    //    });
+        //    //    return users;
+        //    //});*/
+        //};
+
+        $scope.share = function () {
+            $modalInstance.close($scope.selectedUsers);
+            //return $scope.selectedUsers;
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss(false);
         };
     }
 
@@ -419,6 +280,11 @@
                 details: {
                     method: 'GET',
                     url: _endpoint + '/account/userinfo',
+                },
+                getAllUsers: {
+                    method: 'GET',
+                    url: _endpoint + '/account/getallusers',
+                    isArray: true
                 },
                 save: {
                     method: 'POST',
@@ -606,53 +472,29 @@
 
     function modalService($modal) {
         var modalService = {
-            displayMessage: displayMessage,
+            /*displayMessage: displayMessage,
             deleteConfirmModal: deleteConfirmModal,
-            openModalForResult: openModalForResult
+            openModalForResult: openModalForResult,*/
+            shareProject : shareProject
         }
 
         return modalService;
 
-        function displayMessage(title, message) {
+        function shareProject(project) {
             var modal = $modal.open({
-                templateUrl: 'WebApp/common/modals/simple-message-modal.html',
-                controller: 'SimpleMessageModalController',
-                resolve: {
-                    modalConfig: function () {
-                        return {
-                            title: title,
-                            message: message
-                        };
-                    }
-                }
-            });
-            return modal.result;
-        }
-
-        function deleteConfirmModal(message) {
-            var modal = $modal.open({
-                templateUrl: 'WebApp/common/modals/delete-confirm-modal.html',
-                controller: 'DeleteConfirmModalController',
+                templateUrl: 'WebApp/common/modals/share-project-modal.html',
+                controller: 'ShareProjectModalController',
                 keyboard: false,
                 backdrop: 'static',
                 resolve: {
                     modalConfig: function () {
+
                         return {
-                            message: message
+                            project: project
                         };
                     }
                 }
             });
-            return modal.result;
-        }
-
-        function openModalForResult(config, passthrough) {
-            config.resolve = {
-                modalConfig: function () {
-                    return passthrough;
-                }
-            }
-            var modal = $modal.open(config);
             return modal.result;
         }
     }

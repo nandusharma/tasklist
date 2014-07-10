@@ -127,7 +127,7 @@
                 $scope.isNewTaskAdded = false;
             } else {
                 Api.Task.updateTask({ userID: $user.Id, taskID: this.t.ID, projectID: $scope.projectID, name: this.t.Name, priority: 4, categoryID: 1 });
-            }            
+            }           
             //alert('saving task' + this.t.Name);
         };
 

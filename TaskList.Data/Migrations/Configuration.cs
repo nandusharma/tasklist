@@ -157,21 +157,21 @@ namespace TaskList.Data.Migrations
                 new Category
                 {
                     ID = 1,
-                    Name = "Catgory 1",
+                    Name = "Category 1",
                     CreatedBy = "Seeded",
                     CreationDate = DateTime.Now,
                 },
                 new Category
                 {
                     ID = 2,
-                    Name = "Catgory 2",
+                    Name = "Category 2",
                     CreatedBy = "Seeded",
                     CreationDate = DateTime.Now,
                 },
                 new Category
                 {
                     ID = 3,
-                    Name = "Catgory 3",
+                    Name = "Category 3",
                     CreatedBy = "Seeded",
                     CreationDate = DateTime.Now,
                 }

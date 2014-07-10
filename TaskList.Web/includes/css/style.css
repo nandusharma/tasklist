@@ -1982,6 +1982,11 @@ header {
             cursor: pointer;
         }
 
+        #projects .projectrow .btn-sm {
+            padding:0;
+            padding-right: 10px;
+        }
+
         #projects .projectrow .project-left {
             -webkit-box-flex: 1;
             -webkit-box-flex: 1;
@@ -2153,3 +2158,31 @@ header {
 .inlineeditpanel a{
     padding-left: 5px;
 }
+
+.user-lookup-result {
+    margin-top:20px;
+}
+
+    .user-lookup-result ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .user-lookup-result li {
+        padding: 10px 0 5px 0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .user-lookup-result li a {
+        cursor: pointer;
+    }
+
+.completed-tasks {
+    padding: 20px 10px;
+    font-family: "Open Sans", Verdana, Arial, sans-serif;
+}
+
+    .completed-tasks .completed-task-title {
+        font-family: inherit;
+        font-weight: normal;
+    }

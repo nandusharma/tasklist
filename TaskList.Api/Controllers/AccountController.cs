@@ -12,6 +12,7 @@ using Microsoft.Owin.Security.Cookies;
 using TaskList.Api.Filters;
 using TaskList.Api.Models;
 using TaskList.Model.Models;
+using System.Collections.Generic;
 
 namespace TaskList.Api.Controllers
 {
@@ -58,44 +59,17 @@ namespace TaskList.Api.Controllers
             return Ok(UserManager.Users);
         }
 
+        [Queryable, Route("getallusers")]
+        public IHttpActionResult GetAllUsers()
+        {
+            //var users = UserManager.Users.Where(u => u.UserName.Contains(userID)).Select(u => new { u.UserName }).ToList();
+            var users = UserManager.Users.Select(u => new { u.UserName }).ToList();
+            return Ok(users);
+        }
+
         [ValidateModel, HttpPost, Route("Create")]
         public IHttpActionResult CreateUser(NewUserBindingModel model)
-        {
-            /*if (model.Password != model.RepeatPassword)
-                return BadRequest("Password Fields Must Match");
-
-            if ((!model.AirlineId.HasValue && !model.HotelId.HasValue && !model.HandlerId.HasValue && model.UserType != UserType.Management))
-                return BadRequest("User must be attached to entity or management");
-
-            var currentUser = UserManager.FindById(User.Identity.GetUserId());
-            
-            if (currentUser == null)
-                return BadRequest("Current user must be logged in to add users");
-
-            switch (currentUser.UserType)
-	        {
-		        case UserType.Management:
-                 break;
-                case UserType.Airline:
-                    return BadRequest("Only Admin or Management can add users");
-                case UserType.AirlineAdmin:
-                    if (!(model.AirlineId.HasValue && model.AirlineId.Value == currentUser.AirlineId))
-                        return BadRequest("Can only add users to own airline");
-                 break;
-                case UserType.Hotel:
-                    if (!(model.HotelId.HasValue && model.HotelId.Value == currentUser.HotelId))
-                        return BadRequest("Can only add users to own hotel");
-                 break;
-                case UserType.Handler:
-                    return BadRequest("Only Admin or Management can add users");
-                case UserType.HandlerAdmin:
-                    if (!(model.HandlerId.HasValue && model.HandlerId.Value == currentUser.HandlerId))
-                        return BadRequest("Can only add users to own handler");
-                 break;
-                default:
-                    return BadRequest("Current user must be logged in to add users");
-	        }
-            */
+        {            
             var user = new TaskUser { 
                     UserName = model.UserName,
                     Email = model.Email,

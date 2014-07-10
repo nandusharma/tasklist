@@ -1,0 +1,32 @@
+﻿<div>
+    <div class="modal-header">
+        <h4 class="modal-title">Share <em>{{project.Name}}</em></h4>
+    </div>
+    <div class="modal-body">
+        <form role="form">
+            <div class="form-group">
+                <label for="userlookup">Select one or more users to share the project:</label>
+                <input id="userlookup" type="text" ng-model="selected" placeholder="enter user name" typeahead="user for user in users | filter:$viewValue | limitTo:10" typeahead-on-select="addSelectedUser(item, $model, $label)" class="form-control col-sm-10 input-lg" />
+                <div class="clearfix" />
+            </div>
+        </form>
+        <div class="user-lookup-result">
+            <h6 ng-hide="selectedUsers.length <= 0">List of selected users</h6>
+            <ul class="col-sm-6">
+                <li ng-repeat="user in selectedUsers">
+                    <div>
+                        <span class="glyphicon glyphicon-user col-sm-1"></span>
+                        <span class="col-sm-9">{{user}}</span>
+                        <a ng-click="removeUser()" class="col-sm-1"><span class="glyphicon glyphicon-remove-sign"></span></a>
+                    </div>
+                    <div class="clearfix" />
+                </li>
+            </ul>
+            <div class="clearfix" />
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="button" value="Share" class="btn btn-primary" ng-class="{disabled: selectedUsers.length <= 0}" ng-click="share()" />
+        <input type="button" value="Cancel" class="btn btn-default" ng-click="cancel()" />
+    </div>
+</div>

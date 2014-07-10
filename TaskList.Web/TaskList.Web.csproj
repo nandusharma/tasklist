@@ -693,6 +693,7 @@
     <Content Include="Scripts\ui-bootstrap\ui-bootstrap-tpls-0.11.0.js" />
     <Content Include="WebApp\common\modals\image-upload-modal.html" />
     <Content Include="WebApp\common\modals\password-change-modal.html" />
+    <Content Include="WebApp\common\modals\share-project-modal.html" />
     <Content Include="WebApp\common\modals\user-edit-modal.html" />
     <Content Include="Scripts\ui-bootstrap\ui-bootstrap-tpls-0.10.0.min.js.map">
       <DependentUpon>ui-bootstrap-tpls-0.10.0.min.js</DependentUpon>
